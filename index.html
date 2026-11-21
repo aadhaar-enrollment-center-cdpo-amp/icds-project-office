@@ -4188,7 +4188,7 @@
                             <div><strong>তারিখ ও স্লট:</strong> ${escapeHTML(b.date)} (${escapeHTML(b.slot)})</div>
                             <div><strong>চার্জ:</strong> ${escapeHTML(b.fee || '')}</div>
                         </div>
-                        <button type="button" onclick="redownloadTrackedSlip('${escapeHTML(b.token)}')" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <button type="button" onclick="redownloadTrackedSlip('${escapeHTML(b.token)}', this)" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer">
                             <i class="fas fa-file-pdf"></i> স্লিপ ওপেন ও PDF ডাউনলোড করুন
                         </button>
                     </div>
@@ -4196,67 +4196,100 @@
             }).join('');
         }
 
-        function redownloadTrackedSlip(token) {
+        async function redownloadTrackedSlip(token, triggerBtn = null) {
             const b = bookingRecords.find(item => item.token === token);
             if (!b) return;
-            closeTrackSlipModal();
-            switchView('booking');
 
-            lastGeneratedToken = b.token;
-            const reqDigits = b.aadhaarDigits || 12;
-            const reqDigitsBn = toBengaliNumber(reqDigits);
-            const mobDigitsBn = toBengaliNumber(b.mobileDigits || 10);
-            const formattedAadhaar = b.aadhaarNumber ? formatConfiguredAadhaarDisplay(b.aadhaarNumber, reqDigits) : (b.idLast4 ? `XXXX-XXXX-${b.idLast4}` : '');
-            const aadhaarLbl = b.isChildEnrollment ? `বাবা বা মায়ের আধার নম্বর (${reqDigitsBn} ডিজিট):` : `আধার নম্বর (${reqDigitsBn} ডিজিট):`;
-
-            document.getElementById('slip-row-name')?.classList.toggle('hidden', !b.name);
-            document.getElementById('slip-row-parent')?.classList.toggle('hidden', !b.parentGuardianName);
-            document.getElementById('slip-row-last4')?.classList.toggle('hidden', !formattedAadhaar);
-            document.getElementById('slip-row-phone')?.classList.toggle('hidden', !b.phone);
-            document.getElementById('slip-row-address')?.classList.toggle('hidden', !b.address);
-
-            document.getElementById('slip-token').textContent = "#" + b.token;
-            document.getElementById('slip-name').textContent = b.name || "";
-            document.getElementById('slip-parent-guardian-name').textContent = b.parentGuardianName || "";
-            document.getElementById('slip-aadhaar-label-text').textContent = aadhaarLbl;
-            document.getElementById('slip-id-last4').textContent = formattedAadhaar;
-            document.getElementById('slip-phone-label-text').textContent = `মোবাইল নম্বর (${mobDigitsBn} ডিজিট):`;
-            document.getElementById('slip-phone').textContent = b.phone || "";
-            document.getElementById('slip-address').textContent = b.address || "";
-            document.getElementById('slip-service').textContent = b.service || "";
-            document.getElementById('slip-datetime').textContent = `${b.date} (${b.slot})`;
-            document.getElementById('slip-fee').textContent = b.fee || "";
-
-            const slipCustomEl = document.getElementById('slip-custom-fields-list');
-            if (slipCustomEl) {
-                if (Array.isArray(b.customFields) && b.customFields.length > 0) {
-                    slipCustomEl.classList.remove('hidden');
-                    slipCustomEl.innerHTML = b.customFields.map(cf => `<div><span class="text-slate-800 font-semibold">${escapeHTML(cf.label)}:</span> <strong class="text-slate-950 block sm:inline">${escapeHTML(cf.value)}</strong></div>`).join('');
-                } else {
-                    slipCustomEl.classList.add('hidden');
-                    slipCustomEl.innerHTML = "";
-                }
+            const origBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
+            if (triggerBtn) {
+                triggerBtn.disabled = true;
+                triggerBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>PDF তৈরি হচ্ছে...</span>`;
             }
 
-            renderSlipVerificationQR(b);
-            const slipCard = document.getElementById('booking-slip-card');
-            slipCard.classList.remove('hidden');
-            slipCard.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => downloadBookingSlipPDF(), 500);
+            try {
+                lastGeneratedToken = b.token;
+                const reqDigits = b.aadhaarDigits || 12;
+                const reqDigitsBn = toBengaliNumber(reqDigits);
+                const mobDigitsBn = toBengaliNumber(b.mobileDigits || 10);
+                const formattedAadhaar = b.aadhaarNumber ? formatConfiguredAadhaarDisplay(b.aadhaarNumber, reqDigits) : (b.idLast4 ? `XXXX-XXXX-${b.idLast4}` : '');
+                const aadhaarLbl = b.isChildEnrollment ? `বাবা বা মায়ের আধার নম্বর (${reqDigitsBn} ডিজিট):` : `আধার নম্বর (${reqDigitsBn} ডিজিট):`;
+
+                const lines = [`*${portalConfig.officeName}*`, `টোকেন নম্বর: #${b.token}`];
+                if (b.name) lines.push(`নাম: ${b.name}`);
+                if (b.parentGuardianName) lines.push(`পিতা/স্বামী/মাতার নাম: ${b.parentGuardianName}`);
+                if (formattedAadhaar) lines.push(`${aadhaarLbl} ${formattedAadhaar}`);
+                if (b.phone) lines.push(`মোবাইল নম্বর: ${b.phone}`);
+                if (b.address) lines.push(`ঠিকানা: ${b.address}`);
+                if (Array.isArray(b.customFields)) {
+                    b.customFields.forEach(cf => lines.push(`${cf.label}: ${cf.value}`));
+                }
+                lines.push(`সেবা: ${b.service || ''}`);
+                lines.push(`নির্ধারিত চার্জ: ${b.fee || ''}`);
+                lines.push(`তারিখ ও সময়: ${b.date} (${b.slot})`);
+                lastSlipText = lines.join('\n');
+
+                closeTrackSlipModal();
+                switchView('booking');
+
+                document.getElementById('slip-row-name')?.classList.toggle('hidden', !b.name);
+                document.getElementById('slip-row-parent')?.classList.toggle('hidden', !b.parentGuardianName);
+                document.getElementById('slip-row-last4')?.classList.toggle('hidden', !formattedAadhaar);
+                document.getElementById('slip-row-phone')?.classList.toggle('hidden', !b.phone);
+                document.getElementById('slip-row-address')?.classList.toggle('hidden', !b.address);
+
+                document.getElementById('slip-token').textContent = "#" + b.token;
+                document.getElementById('slip-name').textContent = b.name || "";
+                document.getElementById('slip-parent-guardian-name').textContent = b.parentGuardianName || "";
+                document.getElementById('slip-aadhaar-label-text').textContent = aadhaarLbl;
+                document.getElementById('slip-id-last4').textContent = formattedAadhaar;
+                document.getElementById('slip-phone-label-text').textContent = `মোবাইল নম্বর (${mobDigitsBn} ডিজিট):`;
+                document.getElementById('slip-phone').textContent = b.phone || "";
+                document.getElementById('slip-address').textContent = b.address || "";
+                document.getElementById('slip-service').textContent = b.service || "";
+                document.getElementById('slip-datetime').textContent = `${b.date} (${b.slot})`;
+                document.getElementById('slip-fee').textContent = b.fee || "";
+
+                const slipCustomEl = document.getElementById('slip-custom-fields-list');
+                if (slipCustomEl) {
+                    if (Array.isArray(b.customFields) && b.customFields.length > 0) {
+                        slipCustomEl.classList.remove('hidden');
+                        slipCustomEl.innerHTML = b.customFields.map(cf => `<div><span class="text-slate-800 font-semibold">${escapeHTML(cf.label)}:</span> <strong class="text-slate-950 block sm:inline">${escapeHTML(cf.value)}</strong></div>`).join('');
+                    } else {
+                        slipCustomEl.classList.add('hidden');
+                        slipCustomEl.innerHTML = "";
+                    }
+                }
+
+                renderSlipVerificationQR(b);
+                const slipCard = document.getElementById('booking-slip-card');
+                slipCard.classList.remove('hidden');
+                slipCard.scrollIntoView({ behavior: 'smooth' });
+
+                await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 150)));
+                await downloadBookingSlipPDF();
+            } finally {
+                if (triggerBtn) {
+                    triggerBtn.disabled = false;
+                    triggerBtn.innerHTML = origBtnHtml;
+                }
+            }
         }
 
         function openLiveCalendarModal() {
             const grid = document.getElementById('live-calendar-grid');
+            if (!grid) return;
+
             const limit = getEffectiveDailyLimit();
             const limitBn = toBengaliNumber(limit);
             const customHolidays = portalConfig.customHolidays || [];
             const dayNamesBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
 
-            const cards = [];
-            const baseDate = new Date();
-            for (let i = 0; i < 8; i++) {
-                const d = new Date(baseDate);
-                d.setDate(baseDate.getDate() + i);
+            const cardsHtml = [];
+            const today = new Date();
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
                 const dateStr = getLocalYYYYMMDD(d);
                 const dayIdx = d.getDay();
                 const dayName = dayNamesBn[dayIdx];
@@ -4268,38 +4301,44 @@
                 const bookedCount = bookingRecords.filter(b => b.date === dateStr).length;
                 const remaining = Math.max(0, limit - bookedCount);
 
-                let isClosed = isWeekend || isGovtHoliday || Boolean(customHol) || remaining === 0;
-                let badgeText = "";
+                let statusBadge = "";
+                let cardBorder = "";
                 let actionBtn = "";
 
-                if (isWeekend) {
-                    badgeText = "অফিস বন্ধ (সাপ্তাহিক ছুটি)";
-                } else if (isGovtHoliday) {
-                    badgeText = "সরকারি ছুটির দিন";
-                } else if (customHol) {
-                    badgeText = `বন্ধ (${customHol.reason || 'বিশেষ ছুটি'})`;
+                if (isWeekend || isGovtHoliday || customHol) {
+                    const reasonText = isWeekend ? "সাপ্তাহিক ছুটি (অফিস বন্ধ)" : (customHol ? customHol.reason : "সরকারি ছুটি (অফিস বন্ধ)");
+                    statusBadge = `<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-950 border border-rose-400">🔴 অফিস বন্ধ</span>`;
+                    cardBorder = "border-rose-300 bg-rose-50/60";
+                    actionBtn = `<div class="text-xs text-rose-900 font-bold pt-1">${escapeHTML(reasonText)}</div>`;
                 } else if (remaining === 0) {
-                    badgeText = `সব স্লট পূর্ণ (০ / ${limitBn})`;
+                    statusBadge = `<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-950 border border-rose-400">🔴 স্লট পূর্ণ (০ / ${limitBn})</span>`;
+                    cardBorder = "border-rose-300 bg-rose-50/40";
+                    actionBtn = `<div class="text-xs text-rose-900 font-bold pt-1">এই তারিখের সব স্লট বুক হয়ে গেছে</div>`;
                 } else {
-                    badgeText = `খালি স্লট: ${toBengaliNumber(remaining)} / ${limitBn}টি`;
-                    actionBtn = `<button type="button" onclick="bookFromLiveCalendar('${dateStr}')" class="mt-2 w-full bg-teal-900 hover:bg-teal-950 text-white text-xs font-bold py-2 rounded-xl cursor-pointer">এই তারিখে বুক করুন</button>`;
+                    statusBadge = `<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">🟢 খালি: ${toBengaliNumber(remaining)} / ${limitBn}টি</span>`;
+                    cardBorder = "border-emerald-400 bg-emerald-50/40";
+                    actionBtn = `
+                        <button type="button" onclick="bookFromLiveCalendar('${escapeHTML(dateStr)}')" class="w-full mt-2 bg-teal-900 hover:bg-teal-950 text-white font-bold py-2 px-3 rounded-xl text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
+                            <i class="fas fa-calendar-check"></i> এই তারিখে বুক করুন
+                        </button>
+                    `;
                 }
 
-                cards.push(`
-                    <div class="p-4 rounded-2xl border-2 ${isClosed ? 'bg-rose-50 border-rose-300' : 'bg-emerald-50 border-emerald-400'} space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <strong class="text-sm text-slate-950">📅 ${dateStr}</strong>
-                            <span class="text-xs font-bold text-slate-800">${dayName}</span>
+                cardsHtml.push(`
+                    <div class="border-2 ${cardBorder} rounded-2xl p-4 space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <div class="font-extrabold text-sm text-slate-950">📅 ${escapeHTML(dateStr)}</div>
+                                <div class="text-xs text-slate-700 font-bold">${escapeHTML(dayName)}</div>
+                            </div>
+                            ${statusBadge}
                         </div>
-                        <span class="inline-block text-xs font-extrabold px-2.5 py-1 rounded-lg ${isClosed ? 'bg-rose-200 text-rose-950' : 'bg-emerald-200 text-emerald-950'}">
-                            ${escapeHTML(badgeText)}
-                        </span>
                         ${actionBtn}
                     </div>
                 `);
             }
 
-            grid.innerHTML = cards.join('');
+            grid.innerHTML = cardsHtml.join('');
             document.getElementById('live-calendar-modal').classList.remove('hidden');
         }
 
@@ -4310,9 +4349,9 @@
         function bookFromLiveCalendar(dateStr) {
             closeLiveCalendarModal();
             switchView('booking');
-            const dateInp = document.getElementById('book-date');
-            if (dateInp) {
-                dateInp.value = dateStr;
+            const dateInput = document.getElementById('book-date');
+            if (dateInput) {
+                dateInput.value = dateStr;
                 validateBookingDate();
             }
         }
