@@ -110,19 +110,11 @@
                         <button type="button" onclick="openTrackSlipModal(); closeThreeDotMenu()" class="w-full text-left px-4 py-2.5 hover:bg-teal-50 flex items-center gap-3 text-teal-950 font-bold cursor-pointer">
                             <i class="fas fa-search-location text-teal-800 w-4"></i> <span>বুকিং স্ট্যাটাস ও স্লিপ ডাউনলোড</span>
                         </button>
-                        <button type="button" onclick="openLiveCalendarModal(); closeThreeDotMenu()" class="w-full text-left px-4 py-2.5 hover:bg-emerald-50 flex items-center gap-3 text-emerald-950 font-bold cursor-pointer">
-                            <i class="fas fa-calendar-days text-emerald-800 w-4"></i> <span>লাইভ স্লট ক্যালেন্ডার প্রিভিউ</span>
-                        </button>
-                        <button type="button" onclick="openPublicFormsModal(); closeThreeDotMenu()" class="w-full text-left px-4 py-2.5 hover:bg-sky-50 flex items-center gap-3 text-sky-950 font-bold cursor-pointer">
-                            <i class="fas fa-file-arrow-down text-sky-800 w-4"></i> <span>অফিসিয়াল ফর্ম ডাউনলোড কর্নার</span>
-                        </button>
                         <button type="button" onclick="openFaqModal(); closeThreeDotMenu()" class="w-full text-left px-4 py-2.5 hover:bg-indigo-50 flex items-center gap-3 text-indigo-950 font-bold cursor-pointer">
                             <i class="fas fa-circle-question text-indigo-800 w-4"></i> <span>সাধারণ জিজ্ঞাসা (FAQ)</span>
                         </button>
+                        <div id="custom-three-dot-items-container"></div>
                         <div class="border-t border-slate-200 my-1"></div>
-                        <a id="menu-map-link" href="https://share.google/HYZVlJ4fjMObGnTpb" target="_blank" rel="noopener noreferrer" class="w-full text-left px-4 py-2.5 hover:bg-slate-100 flex items-center gap-3 text-slate-950 font-bold">
-                            <i class="fas fa-map-marker-alt text-rose-700 w-4"></i> <span id="menu-map-text">লোকেশন দেখতে এখানে ক্লিক করুন</span>
-                        </a>
                         <a id="menu-wa-link" href="https://wa.me/917628852177" target="_blank" rel="noopener noreferrer" class="w-full text-left px-4 py-2.5 hover:bg-slate-100 flex items-center gap-3 text-slate-950 font-bold">
                             <i class="fab fa-whatsapp text-green-700 w-4"></i> <span id="menu-wa-text">হোয়াটসঅ্যাপ মেসেজ (কল নিষেধ)</span>
                         </a>
@@ -1043,37 +1035,16 @@
                 <div id="admin-tab-holidays" class="hidden space-y-4">
                     <div class="bg-slate-100 border border-slate-300 p-4 rounded-2xl space-y-3">
                         <h4 class="font-bold text-xs sm:text-sm text-slate-950 uppercase tracking-wide flex items-center gap-1.5">
-                            <i class="fas fa-calendar-xmark text-rose-800"></i> নিজে থেকে বিশেষ ছুটির দিন বা বন্ধের তারিখ যোগ করুন
+                            <i class="fas fa-ellipsis-v text-teal-900"></i> উপরের থ্রি-ডট মেনুতে নতুন অপশন / লিংক যোগ করুন
                         </h4>
-                        <p class="text-xs text-slate-800 font-semibold">যে তারিখটি সিলেক্ট করবেন, সেদিন পোর্টালে কোনো বুকিং করা যাবে না এবং অফিস বন্ধ দেখাবে।</p>
-
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="date" id="new-custom-holiday-date" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-400 text-xs sm:text-sm bg-white outline-none">
-                            <input type="text" id="new-custom-holiday-reason" placeholder="কারণ বা উপলক্ষ (যেমন: বিশেষ মিটিং)" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-400 text-xs sm:text-sm bg-white outline-none">
-                            <button type="button" onclick="addCustomHoliday()" class="bg-rose-800 hover:bg-rose-900 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm cursor-pointer shrink-0">
-                                বন্ধ ঘোষণা করুন
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <h5 class="font-bold text-xs sm:text-sm text-slate-950">বর্তমানে নির্ধারিত বিশেষ বন্ধের দিনসমূহ:</h5>
-                        <div id="admin-custom-holidays-list" class="space-y-2 max-h-56 overflow-y-auto"></div>
-                    </div>
-                </div>
-
-                <!-- ৬. লিংক ম্যানেজার ট্যাব -->
-                <div id="admin-tab-links" class="hidden space-y-5">
-                    <div class="bg-slate-100 border border-slate-300 p-4 rounded-2xl space-y-3">
-                        <h4 class="font-bold text-xs sm:text-sm text-slate-950 uppercase tracking-wide">নতুন লিংক যোগ করুন</h4>
-                        <input type="text" id="new-link-title" placeholder="লিংকের নাম (যেমন: অফিসিয়াল ওয়েবসাইট)" class="w-full px-3.5 py-2 rounded-xl border border-slate-400 text-xs sm:text-sm outline-none bg-white">
-                        <input type="url" id="new-link-url" placeholder="URL (যেমন: https://...)" class="w-full px-3.5 py-2 rounded-xl border border-slate-400 text-xs sm:text-sm outline-none bg-white">
-                        <input type="text" id="new-link-icon" placeholder="FontAwesome আইকন (যেমন: fas fa-globe)" class="w-full px-3.5 py-2 rounded-xl border border-slate-400 text-xs sm:text-sm outline-none bg-white">
-                        <button type="button" onclick="addNewCustomLink()" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm cursor-pointer">
-                            লিংক যুক্ত করুন
+                        <input type="text" id="new-menu-item-title" placeholder="মেনু অপশনের নাম (যেমন: অফিসিয়াল নোটিশ / ফর্ম ডাউনলোড)" class="w-full px-3.5 py-2 rounded-xl border border-slate-400 text-xs sm:text-sm outline-none bg-white">
+                        <input type="url" id="new-menu-item-url" placeholder="লিংক / URL (যেমন: https://...)" class="w-full px-3.5 py-2 rounded-xl border border-slate-400 text-xs sm:text-sm outline-none bg-white">
+                        <input type="text" id="new-menu-item-icon" placeholder="আইকন (ঐচ্ছিক, যেমন: fas fa-file-pdf বা fas fa-globe)" class="w-full px-3.5 py-2 rounded-xl border border-slate-400 text-xs sm:text-sm outline-none bg-white">
+                        <button type="button" onclick="addNewThreeDotMenuItem()" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm cursor-pointer">
+                            <i class="fas fa-plus mr-1"></i> থ্রি-ডট মেনুতে অপশন যোগ করুন
                         </button>
+                        <div id="admin-three-dot-items-list" class="space-y-2 max-h-48 overflow-y-auto pt-1"></div>
                     </div>
-                    <div id="admin-links-manager-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
 
                     <div class="bg-slate-100 border border-slate-300 p-4 rounded-2xl space-y-3">
                         <h4 class="font-bold text-xs sm:text-sm text-slate-950 uppercase tracking-wide">নতুন কাস্টম অপশন / পেজ সেকশন যোগ করুন</h4>
@@ -1231,6 +1202,7 @@
         const LOCAL_CFG_KEY = 'cdpo_amarpur_portal_v26';
         const LOCAL_BOOKINGS_KEY = 'cdpo_amarpur_bookings_v26';
         const LOCAL_VAULT_KEY = 'cdpo_amarpur_file_vault_v26';
+        const LOCAL_DELETED_TOKENS_KEY = 'cdpo_amarpur_deleted_tokens_v26';
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'cdpo-amarpur-portal';
 
         let currentPortalLang = 'bn';
@@ -1403,7 +1375,6 @@
             setTxt('nav-book-btn-text', t.navBookBtn);
             setTxt('menu-home-text', t.menuHome);
             setTxt('menu-book-text', t.menuBook);
-            setTxt('menu-map-text', t.menuMap);
             setTxt('menu-wa-text', t.menuWa);
             setTxt('menu-checklist-text', t.menuChecklist);
             setTxt('menu-settings-text', t.menuSettings);
@@ -1532,10 +1503,27 @@
         let currentUser = null;
         let isCloudReady = false;
         let pendingBookingsMap = new Map();
+        let deletedTokensSet = new Set();
         let unsubConfig = null;
         let unsubBookings = null;
         let unsubVault = null;
         let activeDocCatKey = 'name';
+
+        function saveDeletedTokensCache() {
+            try {
+                localStorage.setItem(LOCAL_DELETED_TOKENS_KEY, JSON.stringify(Array.from(deletedTokensSet)));
+            } catch (e) {}
+        }
+
+        function loadDeletedTokensCache() {
+            try {
+                const raw = localStorage.getItem(LOCAL_DELETED_TOKENS_KEY);
+                if (raw) {
+                    const arr = JSON.parse(raw);
+                    if (Array.isArray(arr)) deletedTokensSet = new Set(arr);
+                }
+            } catch (e) {}
+        }
 
         function escapeHTML(str) {
             if (typeof str !== 'string') return '';
@@ -1693,6 +1681,7 @@
                 { title: "ডকুমেন্ট তালিকা ২০২৬ (PDF)", url: "https://uidai.gov.in/images/commdoc/List_of_Supporting_Document_for_Aadhaar_Enrolment_and_Update.pdf", icon: "fas fa-file-pdf" }
             ],
             customSections: [],
+            customThreeDotItems: [],
             customHolidays: [],
             customBookingFields: [],
             hiddenStandardFields: ['idLast4'],
@@ -2216,7 +2205,7 @@
                     vaultQuestion: fileVaultState.vaultQuestion,
                     vaultAnswer: fileVaultState.vaultAnswer,
                     lockedFiles: compactFiles
-                }, { merge: true });
+                }, { merge: false });
             } catch (e) {}
         }
 
@@ -2440,7 +2429,7 @@
             fileVaultState.lockedFiles = (fileVaultState.lockedFiles || []).filter(f => f.id !== fileId);
             await syncVaultToCloud();
             renderVaultFilesList();
-            showToast("লকার থেকে ফাইলটি মুছে ফেলা হয়েছে।");
+            showToast("লকার ও ক্লাউড থেকে ফাইলটি স্থায়ীভাবে মুছে ফেলা হয়েছে।");
         }
 
         function renderVaultFilesList() {
@@ -2487,6 +2476,7 @@
         }
 
         function loadLocalCache() {
+            loadDeletedTokensCache();
             try {
                 const c = localStorage.getItem(LOCAL_CFG_KEY) || localStorage.getItem('cdpo_amarpur_portal_v25') || localStorage.getItem('cdpo_amarpur_portal_v24');
                 if (c) portalConfig = { ...defaultPortalConfig, ...JSON.parse(c) };
@@ -2501,7 +2491,7 @@
                 const b = localStorage.getItem(LOCAL_BOOKINGS_KEY) || localStorage.getItem('cdpo_amarpur_bookings_v25') || localStorage.getItem('cdpo_amarpur_bookings_v24');
                 if (b) {
                     const parsedBookings = JSON.parse(b);
-                    bookingRecords = cleanOldBookings(parsedBookings);
+                    bookingRecords = cleanOldBookings(parsedBookings).filter(item => item && !deletedTokensSet.has(item.token));
                 }
             } catch (e) {}
             loadVaultCache();
@@ -2509,7 +2499,7 @@
 
         function saveLocalCache() {
             try {
-                bookingRecords = cleanOldBookings(bookingRecords);
+                bookingRecords = cleanOldBookings(bookingRecords).filter(item => item && !deletedTokensSet.has(item.token));
                 localStorage.setItem(LOCAL_CFG_KEY, JSON.stringify(portalConfig));
                 localStorage.setItem(LOCAL_BOOKINGS_KEY, JSON.stringify(bookingRecords));
             } catch (e) {}
@@ -2589,7 +2579,7 @@
                         updateBookingDocPreview();
                         updateSlotAvailability();
                     } else {
-                        setDoc(configDocRef, portalConfig, { merge: true }).catch(() => {});
+                        setDoc(configDocRef, portalConfig, { merge: false }).catch(() => {});
                     }
                 }, (err) => {
                     console.error("Config snapshot error:", err);
@@ -2626,27 +2616,43 @@
 
                 const bookingsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'bookings');
 
+                if (deletedTokensSet.size > 0) {
+                    for (const delTok of Array.from(deletedTokensSet)) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', delTok)).catch(() => {});
+                    }
+                }
+
                 if (pendingBookingsMap.size > 0) {
                     for (const [tok, bItem] of pendingBookingsMap.entries()) {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', tok), bItem, { merge: true }).catch(() => {});
+                        if (!deletedTokensSet.has(tok)) {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', tok), bItem, { merge: true }).catch(() => {});
+                        }
                     }
                     pendingBookingsMap.clear();
                 }
 
                 unsubBookings = onSnapshot(bookingsColRef, (snapshot) => {
-                    const mergedMap = new Map();
-                    bookingRecords.forEach(item => {
-                        if (item && item.token) mergedMap.set(item.token, item);
-                    });
+                    const cloudMap = new Map();
 
                     snapshot.forEach((docSnap) => {
                         const data = docSnap.data();
                         if (data && data.token) {
-                            mergedMap.set(data.token, data);
+                            if (deletedTokensSet.has(data.token)) {
+                                deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', data.token)).catch(() => {});
+                            } else {
+                                cloudMap.set(data.token, data);
+                            }
                         }
                     });
 
-                    let allRecords = Array.from(mergedMap.values());
+                    // শুধুমাত্র যেগুলো এখনো ক্লাউডে আপলোড অপেক্ষমাণ আছে সেগুলো যোগ হবে, ডিলিট হওয়া ডাটা কখনোই ফেরত আসবে না
+                    pendingBookingsMap.forEach((bItem, tok) => {
+                        if (bItem && tok && !deletedTokensSet.has(tok)) {
+                            cloudMap.set(tok, bItem);
+                        }
+                    });
+
+                    let allRecords = Array.from(cloudMap.values());
                     allRecords = cleanOldBookings(allRecords);
 
                     allRecords.sort((a, b) => {
@@ -2680,7 +2686,7 @@
             try {
                 updateCloudBadge('syncing');
                 const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'portalConfig');
-                await setDoc(configDocRef, portalConfig, { merge: true });
+                await setDoc(configDocRef, portalConfig, { merge: false });
                 updateCloudBadge('connected');
             } catch (e) {
                 updateCloudBadge('offline');
@@ -2688,6 +2694,10 @@
         }
 
         async function saveBookingToCloud(bookingObj) {
+            if (bookingObj && bookingObj.token && deletedTokensSet.has(bookingObj.token)) {
+                deletedTokensSet.delete(bookingObj.token);
+                saveDeletedTokensCache();
+            }
             saveLocalCache();
             if (!isCloudReady || !db || !currentUser) {
                 pendingBookingsMap.set(bookingObj.token, bookingObj);
@@ -2909,106 +2919,15 @@
             document.getElementById('footer-office-name').textContent = portalConfig.officeName;
             document.getElementById('footer-phone').textContent = portalConfig.phone;
             document.getElementById('menu-wa-link').href = `https://wa.me/91${encodeURIComponent(portalConfig.phone)}`;
-            document.getElementById('menu-map-link').href = sanitizeURL(portalConfig.mapLink || "https://share.google/HYZVlJ4fjMObGnTpb");
             document.getElementById('display-sec-question').textContent = portalConfig.securityQuestion || "তোমার প্রিয় মানুষটার নাম কি?";
 
-            const limit = getEffectiveDailyLimit();
-            const limitBn = toBengaliNumber(limit);
-            const mobileDigitsBn = toBengaliNumber(getConfiguredMobileDigits());
-            const slipPhoneLbl = document.getElementById('slip-phone-label-text');
-            if (slipPhoneLbl) slipPhoneLbl.textContent = `মোবাইল নম্বর (${mobileDigitsBn} ডিজিট):`;
-
-            const headerBadge = document.getElementById('booking-header-limit-badge');
-            if (headerBadge) {
-                headerBadge.textContent = `অনলাইন স্লট বুকিং (আগামী ১৬ দিন • দৈনিক ${limitBn} স্লট • ১০:৩০–০৪:৩০)`;
-            }
-            const slotLabel = document.getElementById('slot-select-label');
-            if (slotLabel) {
-                slotLabel.textContent = `সময় স্লট নির্বাচন করুন (মোট ${limitBn}টি স্লট • সকাল ১০:৩০ - বিকাল ০৪:৩০) *`;
-            }
-            const introEl = document.getElementById('booking-intro-text');
-            if (introEl) {
-                introEl.textContent = portalConfig.bookingIntroText || defaultPortalConfig.bookingIntroText;
-            }
-            const extraBox = document.getElementById('booking-extra-info-box');
-            if (extraBox) {
-                const extraVal = (portalConfig.bookingExtraInfo || "").trim();
-                extraBox.textContent = extraVal;
-                extraBox.classList.toggle('hidden', !extraVal);
-            }
-            const footerInfoBox = document.getElementById('booking-footer-info-box');
-            if (footerInfoBox) {
-                const footerVal = (portalConfig.bookingFooterInfo || "").trim();
-                footerInfoBox.textContent = footerVal;
-                footerInfoBox.classList.toggle('hidden', !footerVal);
-            }
-            const ruleNoteEl = document.getElementById('slot-availability-hint');
-            if (ruleNoteEl) {
-                ruleNoteEl.textContent = portalConfig.slotRuleNote || `• সকাল ১০:৩০ থেকে বিকাল ০৪:৩০-এর মধ্যে ${limitBn}টি স্লট স্বয়ংক্রিয়ভাবে তৈরি হয়েছে এবং একই আধার নম্বর দিয়ে একদিনে ২টির বেশি বুকিং করা যাবে না।`;
-            }
-
-            rebuildSlotOptions();
-            renderStandardBookingFields();
-            renderDynamicBookingFields();
-            renderAdminCustomFieldsManager();
-            renderAdminStandardFieldsManager();
-            updateVaultBadge();
-
-            const docsData = portalConfig.uidaiDocsData || defaultUidaiDocsData;
-            ['name', 'dob', 'address', 'biometric', 'mobile', 'email', 'child', 'youth5to18'].forEach(k => {
-                const badgeEl = document.getElementById(`badge-fee-${k}`);
-                const dItem = docsData[k] || defaultUidaiDocsData[k];
-                if (badgeEl && dItem) {
-                    badgeEl.textContent = dItem.fee.split(' ')[0] || "₹৭৫";
-                }
-            });
-
-            const serviceSelect = document.getElementById('book-service');
-            if (serviceSelect) {
-                const currentVal = serviceSelect.value;
-                const mergedDocsList = [
-                    ...Object.values(docsData),
-                    ...(defaultUidaiDocsData.youth5to18 && !Object.values(docsData).some(d => d && d.title === defaultUidaiDocsData.youth5to18.title)
-                        ? [defaultUidaiDocsData.youth5to18]
-                        : [])
-                ].filter(Boolean);
-
-                serviceSelect.innerHTML = mergedDocsList.map(d => `
-                    <option value="${escapeHTML(d.title)}">${escapeHTML(d.title)}</option>
-                `).join('');
-                if (currentVal && Array.from(serviceSelect.options).some(o => o.value === currentVal)) {
-                    serviceSelect.value = currentVal;
-                }
-            }
-
-            syncAadhaarInputsWithService();
-
-            renderNoticeSlide();
-            startNoticeAutoSlide();
-
-            const container = document.getElementById('custom-links-container');
-            container.innerHTML = (portalConfig.links || []).map(link => `
-                <a href="${sanitizeURL(link.url)}" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-4 rounded-2xl border border-slate-300 bg-slate-100 hover:bg-teal-50 hover:border-teal-500 transition">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-10 h-10 rounded-xl bg-white text-teal-900 border border-slate-300 flex items-center justify-center shrink-0 group-hover:bg-teal-900 group-hover:text-white transition">
-                            <i class="${escapeHTML(link.icon || 'fas fa-link')}"></i>
-                        </div>
-                        <span class="font-bold text-slate-950 text-sm truncate">${escapeHTML(link.title)}</span>
-                    </div>
-                    <i class="fas fa-arrow-up-right-from-square text-xs text-slate-700 group-hover:text-teal-900"></i>
-                </a>
-            `).join('');
-
-            const customContainer = document.getElementById('dynamic-custom-options-container');
-            if (customContainer) {
-                const sections = portalConfig.customSections || [];
-                customContainer.innerHTML = sections.map(sec => `
-                    <div class="bg-[#ffffff] border-2 border-slate-300 p-6 sm:p-8 rounded-3xl shadow-xs space-y-3">
-                        <h3 class="text-lg sm:text-xl font-bold text-slate-950 border-b border-slate-200 pb-3 flex items-center gap-2">
-                            <i class="fas fa-bookmark text-teal-900 text-base"></i> ${escapeHTML(sec.title)}
-                        </h3>
-                        <p class="text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed whitespace-pre-line">${escapeHTML(sec.desc)}</p>
-                    </div>
+            const customMenuContainer = document.getElementById('custom-three-dot-items-container');
+            if (customMenuContainer) {
+                const menuItems = Array.isArray(portalConfig.customThreeDotItems) ? portalConfig.customThreeDotItems : [];
+                customMenuContainer.innerHTML = menuItems.map(item => `
+                    <a href="${sanitizeURL(item.url)}" target="_blank" rel="noopener noreferrer" onclick="closeThreeDotMenu()" class="w-full text-left px-4 py-2.5 hover:bg-teal-50 flex items-center gap-3 text-slate-950 font-bold">
+                        <i class="${escapeHTML(item.icon || 'fas fa-arrow-up-right-from-square')} text-teal-800 w-4"></i> <span>${escapeHTML(item.title)}</span>
+                    </a>
                 `).join('');
             }
         }
@@ -3577,6 +3496,7 @@
             }
             if (tab === 'links') {
                 renderAdminLinksManager();
+                renderAdminThreeDotItemsManager();
                 renderAdminCustomSectionsManager();
             }
             if (tab === 'security') {
@@ -3831,10 +3751,12 @@
                     bookingRecords.forEach(b => mergedMap.set(b.token, b));
                     parsed.bookingRecords.forEach(b => {
                         if (b && b.token) {
+                            deletedTokensSet.delete(b.token);
                             mergedMap.set(b.token, b);
                             saveBookingToCloud(b);
                         }
                     });
+                    saveDeletedTokensCache();
                     let allRecords = Array.from(mergedMap.values());
                     bookingRecords = cleanOldBookings(allRecords);
                     bookingRecords.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
@@ -3954,16 +3876,28 @@
 
         async function deleteBookingRecord(token) {
             if (!isAdminAuthenticated) return;
+            deletedTokensSet.add(token);
+            saveDeletedTokensCache();
+            pendingBookingsMap.delete(token);
+
             bookingRecords = bookingRecords.filter(b => b.token !== token);
             saveLocalCache();
             renderBookingList();
             updateSlotAvailability();
+
+            if (!isCloudReady || !db || !currentUser) {
+                await initCloudStorage();
+            }
             if (isCloudReady && db && currentUser) {
                 try {
+                    updateCloudBadge('syncing');
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', token));
-                } catch (e) {}
+                    updateCloudBadge('connected');
+                } catch (e) {
+                    updateCloudBadge('offline');
+                }
             }
-            showToast("বুকিং রেকর্ড মুছে ফেলা হয়েছে।");
+            showToast("বুকিং রেকর্ড ও ক্লাউড ব্যাকআপ থেকে স্থায়ীভাবে মুছে ফেলা হয়েছে।");
         }
 
         function sendSlipToWhatsApp() {
@@ -4072,6 +4006,58 @@
             renderPortal();
             renderAdminLinksManager();
             showToast("লিংকটি মুছে ফেলা হয়েছে।");
+        }
+
+        function renderAdminThreeDotItemsManager() {
+            const listEl = document.getElementById('admin-three-dot-items-list');
+            if (!listEl) return;
+            const items = Array.isArray(portalConfig.customThreeDotItems) ? portalConfig.customThreeDotItems : [];
+            if (items.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-700 font-semibold bg-white p-2.5 rounded-xl border border-slate-300">থ্রি-ডট মেনুতে এখনও কোনো কাস্টম অপশন যোগ করা হয়নি।</p>`;
+                return;
+            }
+            listEl.innerHTML = items.map((item, idx) => `
+                <div class="flex items-center justify-between bg-white border border-slate-300 p-3 rounded-xl text-xs sm:text-sm gap-2">
+                    <div class="truncate">
+                        <strong class="text-slate-950"><i class="${escapeHTML(item.icon || 'fas fa-link')} text-teal-800 mr-1"></i> ${escapeHTML(item.title)}</strong>
+                        <span class="block text-slate-700 font-medium truncate">${escapeHTML(item.url)}</span>
+                    </div>
+                    <button type="button" onclick="removeThreeDotMenuItem(${idx})" class="bg-rose-100 hover:bg-rose-200 text-rose-950 border border-rose-300 px-3 py-1.5 rounded-lg font-bold shrink-0 cursor-pointer">
+                        মুছুন
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function addNewThreeDotMenuItem() {
+            if (!isAdminAuthenticated) return;
+            const title = (document.getElementById('new-menu-item-title')?.value || '').trim();
+            const url = (document.getElementById('new-menu-item-url')?.value || '').trim();
+            const icon = (document.getElementById('new-menu-item-icon')?.value || '').trim() || "fas fa-arrow-up-right-from-square";
+            if (!title || !url) {
+                showToast("⚠️ অপশনের নাম এবং লিংক (URL) দিন।");
+                return;
+            }
+            if (!Array.isArray(portalConfig.customThreeDotItems)) portalConfig.customThreeDotItems = [];
+            portalConfig.customThreeDotItems.push({ title, url, icon });
+            await persistConfig();
+            renderPortal();
+            renderAdminThreeDotItemsManager();
+            document.getElementById('new-menu-item-title').value = "";
+            document.getElementById('new-menu-item-url').value = "";
+            document.getElementById('new-menu-item-icon').value = "";
+            showToast("✅ থ্রি-ডট মেনুতে নতুন অপশন যোগ ও ক্লাউডে সেভ হয়েছে!");
+        }
+
+        async function removeThreeDotMenuItem(index) {
+            if (!isAdminAuthenticated) return;
+            if (Array.isArray(portalConfig.customThreeDotItems)) {
+                portalConfig.customThreeDotItems.splice(index, 1);
+                await persistConfig();
+                renderPortal();
+                renderAdminThreeDotItemsManager();
+                showToast("থ্রি-ডট মেনু থেকে অপশনটি মুছে ফেলা হয়েছে।");
+            }
         }
 
         function renderAdminCustomSectionsManager() {
@@ -4188,7 +4174,7 @@
                             <div><strong>তারিখ ও স্লট:</strong> ${escapeHTML(b.date)} (${escapeHTML(b.slot)})</div>
                             <div><strong>চার্জ:</strong> ${escapeHTML(b.fee || '')}</div>
                         </div>
-                        <button type="button" onclick="redownloadTrackedSlip('${escapeHTML(b.token)}')" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <button type="button" onclick="redownloadTrackedSlip('${escapeHTML(b.token)}', this)" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer">
                             <i class="fas fa-file-pdf"></i> স্লিপ ওপেন ও PDF ডাউনলোড করুন
                         </button>
                     </div>
@@ -4196,67 +4182,100 @@
             }).join('');
         }
 
-        function redownloadTrackedSlip(token) {
+        async function redownloadTrackedSlip(token, triggerBtn = null) {
             const b = bookingRecords.find(item => item.token === token);
             if (!b) return;
-            closeTrackSlipModal();
-            switchView('booking');
 
-            lastGeneratedToken = b.token;
-            const reqDigits = b.aadhaarDigits || 12;
-            const reqDigitsBn = toBengaliNumber(reqDigits);
-            const mobDigitsBn = toBengaliNumber(b.mobileDigits || 10);
-            const formattedAadhaar = b.aadhaarNumber ? formatConfiguredAadhaarDisplay(b.aadhaarNumber, reqDigits) : (b.idLast4 ? `XXXX-XXXX-${b.idLast4}` : '');
-            const aadhaarLbl = b.isChildEnrollment ? `বাবা বা মায়ের আধার নম্বর (${reqDigitsBn} ডিজিট):` : `আধার নম্বর (${reqDigitsBn} ডিজিট):`;
-
-            document.getElementById('slip-row-name')?.classList.toggle('hidden', !b.name);
-            document.getElementById('slip-row-parent')?.classList.toggle('hidden', !b.parentGuardianName);
-            document.getElementById('slip-row-last4')?.classList.toggle('hidden', !formattedAadhaar);
-            document.getElementById('slip-row-phone')?.classList.toggle('hidden', !b.phone);
-            document.getElementById('slip-row-address')?.classList.toggle('hidden', !b.address);
-
-            document.getElementById('slip-token').textContent = "#" + b.token;
-            document.getElementById('slip-name').textContent = b.name || "";
-            document.getElementById('slip-parent-guardian-name').textContent = b.parentGuardianName || "";
-            document.getElementById('slip-aadhaar-label-text').textContent = aadhaarLbl;
-            document.getElementById('slip-id-last4').textContent = formattedAadhaar;
-            document.getElementById('slip-phone-label-text').textContent = `মোবাইল নম্বর (${mobDigitsBn} ডিজিট):`;
-            document.getElementById('slip-phone').textContent = b.phone || "";
-            document.getElementById('slip-address').textContent = b.address || "";
-            document.getElementById('slip-service').textContent = b.service || "";
-            document.getElementById('slip-datetime').textContent = `${b.date} (${b.slot})`;
-            document.getElementById('slip-fee').textContent = b.fee || "";
-
-            const slipCustomEl = document.getElementById('slip-custom-fields-list');
-            if (slipCustomEl) {
-                if (Array.isArray(b.customFields) && b.customFields.length > 0) {
-                    slipCustomEl.classList.remove('hidden');
-                    slipCustomEl.innerHTML = b.customFields.map(cf => `<div><span class="text-slate-800 font-semibold">${escapeHTML(cf.label)}:</span> <strong class="text-slate-950 block sm:inline">${escapeHTML(cf.value)}</strong></div>`).join('');
-                } else {
-                    slipCustomEl.classList.add('hidden');
-                    slipCustomEl.innerHTML = "";
-                }
+            const origBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
+            if (triggerBtn) {
+                triggerBtn.disabled = true;
+                triggerBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>PDF তৈরি হচ্ছে...</span>`;
             }
 
-            renderSlipVerificationQR(b);
-            const slipCard = document.getElementById('booking-slip-card');
-            slipCard.classList.remove('hidden');
-            slipCard.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => downloadBookingSlipPDF(), 500);
+            try {
+                lastGeneratedToken = b.token;
+                const reqDigits = b.aadhaarDigits || 12;
+                const reqDigitsBn = toBengaliNumber(reqDigits);
+                const mobDigitsBn = toBengaliNumber(b.mobileDigits || 10);
+                const formattedAadhaar = b.aadhaarNumber ? formatConfiguredAadhaarDisplay(b.aadhaarNumber, reqDigits) : (b.idLast4 ? `XXXX-XXXX-${b.idLast4}` : '');
+                const aadhaarLbl = b.isChildEnrollment ? `বাবা বা মায়ের আধার নম্বর (${reqDigitsBn} ডিজিট):` : `আধার নম্বর (${reqDigitsBn} ডিজিট):`;
+
+                const lines = [`*${portalConfig.officeName}*`, `টোকেন নম্বর: #${b.token}`];
+                if (b.name) lines.push(`নাম: ${b.name}`);
+                if (b.parentGuardianName) lines.push(`পিতা/স্বামী/মাতার নাম: ${b.parentGuardianName}`);
+                if (formattedAadhaar) lines.push(`${aadhaarLbl} ${formattedAadhaar}`);
+                if (b.phone) lines.push(`মোবাইল নম্বর: ${b.phone}`);
+                if (b.address) lines.push(`ঠিকানা: ${b.address}`);
+                if (Array.isArray(b.customFields)) {
+                    b.customFields.forEach(cf => lines.push(`${cf.label}: ${cf.value}`));
+                }
+                lines.push(`সেবা: ${b.service || ''}`);
+                lines.push(`নির্ধারিত চার্জ: ${b.fee || ''}`);
+                lines.push(`তারিখ ও সময়: ${b.date} (${b.slot})`);
+                lastSlipText = lines.join('\n');
+
+                closeTrackSlipModal();
+                switchView('booking');
+
+                document.getElementById('slip-row-name')?.classList.toggle('hidden', !b.name);
+                document.getElementById('slip-row-parent')?.classList.toggle('hidden', !b.parentGuardianName);
+                document.getElementById('slip-row-last4')?.classList.toggle('hidden', !formattedAadhaar);
+                document.getElementById('slip-row-phone')?.classList.toggle('hidden', !b.phone);
+                document.getElementById('slip-row-address')?.classList.toggle('hidden', !b.address);
+
+                document.getElementById('slip-token').textContent = "#" + b.token;
+                document.getElementById('slip-name').textContent = b.name || "";
+                document.getElementById('slip-parent-guardian-name').textContent = b.parentGuardianName || "";
+                document.getElementById('slip-aadhaar-label-text').textContent = aadhaarLbl;
+                document.getElementById('slip-id-last4').textContent = formattedAadhaar;
+                document.getElementById('slip-phone-label-text').textContent = `মোবাইল নম্বর (${mobDigitsBn} ডিজিট):`;
+                document.getElementById('slip-phone').textContent = b.phone || "";
+                document.getElementById('slip-address').textContent = b.address || "";
+                document.getElementById('slip-service').textContent = b.service || "";
+                document.getElementById('slip-datetime').textContent = `${b.date} (${b.slot})`;
+                document.getElementById('slip-fee').textContent = b.fee || "";
+
+                const slipCustomEl = document.getElementById('slip-custom-fields-list');
+                if (slipCustomEl) {
+                    if (Array.isArray(b.customFields) && b.customFields.length > 0) {
+                        slipCustomEl.classList.remove('hidden');
+                        slipCustomEl.innerHTML = b.customFields.map(cf => `<div><span class="text-slate-800 font-semibold">${escapeHTML(cf.label)}:</span> <strong class="text-slate-950 block sm:inline">${escapeHTML(cf.value)}</strong></div>`).join('');
+                    } else {
+                        slipCustomEl.classList.add('hidden');
+                        slipCustomEl.innerHTML = "";
+                    }
+                }
+
+                renderSlipVerificationQR(b);
+                const slipCard = document.getElementById('booking-slip-card');
+                slipCard.classList.remove('hidden');
+                slipCard.scrollIntoView({ behavior: 'smooth' });
+
+                await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 150)));
+                await downloadBookingSlipPDF();
+            } finally {
+                if (triggerBtn) {
+                    triggerBtn.disabled = false;
+                    triggerBtn.innerHTML = origBtnHtml;
+                }
+            }
         }
 
         function openLiveCalendarModal() {
             const grid = document.getElementById('live-calendar-grid');
+            if (!grid) return;
+
             const limit = getEffectiveDailyLimit();
             const limitBn = toBengaliNumber(limit);
             const customHolidays = portalConfig.customHolidays || [];
             const dayNamesBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
 
-            const cards = [];
-            const baseDate = new Date();
-            for (let i = 0; i < 8; i++) {
-                const d = new Date(baseDate);
-                d.setDate(baseDate.getDate() + i);
+            const cardsHtml = [];
+            const today = new Date();
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
                 const dateStr = getLocalYYYYMMDD(d);
                 const dayIdx = d.getDay();
                 const dayName = dayNamesBn[dayIdx];
@@ -4268,38 +4287,44 @@
                 const bookedCount = bookingRecords.filter(b => b.date === dateStr).length;
                 const remaining = Math.max(0, limit - bookedCount);
 
-                let isClosed = isWeekend || isGovtHoliday || Boolean(customHol) || remaining === 0;
-                let badgeText = "";
+                let statusBadge = "";
+                let cardBorder = "";
                 let actionBtn = "";
 
-                if (isWeekend) {
-                    badgeText = "অফিস বন্ধ (সাপ্তাহিক ছুটি)";
-                } else if (isGovtHoliday) {
-                    badgeText = "সরকারি ছুটির দিন";
-                } else if (customHol) {
-                    badgeText = `বন্ধ (${customHol.reason || 'বিশেষ ছুটি'})`;
+                if (isWeekend || isGovtHoliday || customHol) {
+                    const reasonText = isWeekend ? "সাপ্তাহিক ছুটি (অফিস বন্ধ)" : (customHol ? customHol.reason : "সরকারি ছুটি (অফিস বন্ধ)");
+                    statusBadge = `<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-950 border border-rose-400">🔴 অফিস বন্ধ</span>`;
+                    cardBorder = "border-rose-300 bg-rose-50/60";
+                    actionBtn = `<div class="text-xs text-rose-900 font-bold pt-1">${escapeHTML(reasonText)}</div>`;
                 } else if (remaining === 0) {
-                    badgeText = `সব স্লট পূর্ণ (০ / ${limitBn})`;
+                    statusBadge = `<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-950 border border-rose-400">🔴 স্লট পূর্ণ (০ / ${limitBn})</span>`;
+                    cardBorder = "border-rose-300 bg-rose-50/40";
+                    actionBtn = `<div class="text-xs text-rose-900 font-bold pt-1">এই তারিখের সব স্লট বুক হয়ে গেছে</div>`;
                 } else {
-                    badgeText = `খালি স্লট: ${toBengaliNumber(remaining)} / ${limitBn}টি`;
-                    actionBtn = `<button type="button" onclick="bookFromLiveCalendar('${dateStr}')" class="mt-2 w-full bg-teal-900 hover:bg-teal-950 text-white text-xs font-bold py-2 rounded-xl cursor-pointer">এই তারিখে বুক করুন</button>`;
+                    statusBadge = `<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">🟢 খালি: ${toBengaliNumber(remaining)} / ${limitBn}টি</span>`;
+                    cardBorder = "border-emerald-400 bg-emerald-50/40";
+                    actionBtn = `
+                        <button type="button" onclick="bookFromLiveCalendar('${escapeHTML(dateStr)}')" class="w-full mt-2 bg-teal-900 hover:bg-teal-950 text-white font-bold py-2 px-3 rounded-xl text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
+                            <i class="fas fa-calendar-check"></i> এই তারিখে বুক করুন
+                        </button>
+                    `;
                 }
 
-                cards.push(`
-                    <div class="p-4 rounded-2xl border-2 ${isClosed ? 'bg-rose-50 border-rose-300' : 'bg-emerald-50 border-emerald-400'} space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <strong class="text-sm text-slate-950">📅 ${dateStr}</strong>
-                            <span class="text-xs font-bold text-slate-800">${dayName}</span>
+                cardsHtml.push(`
+                    <div class="border-2 ${cardBorder} rounded-2xl p-4 space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <div class="font-extrabold text-sm text-slate-950">📅 ${escapeHTML(dateStr)}</div>
+                                <div class="text-xs text-slate-700 font-bold">${escapeHTML(dayName)}</div>
+                            </div>
+                            ${statusBadge}
                         </div>
-                        <span class="inline-block text-xs font-extrabold px-2.5 py-1 rounded-lg ${isClosed ? 'bg-rose-200 text-rose-950' : 'bg-emerald-200 text-emerald-950'}">
-                            ${escapeHTML(badgeText)}
-                        </span>
                         ${actionBtn}
                     </div>
                 `);
             }
 
-            grid.innerHTML = cards.join('');
+            grid.innerHTML = cardsHtml.join('');
             document.getElementById('live-calendar-modal').classList.remove('hidden');
         }
 
@@ -4310,9 +4335,9 @@
         function bookFromLiveCalendar(dateStr) {
             closeLiveCalendarModal();
             switchView('booking');
-            const dateInp = document.getElementById('book-date');
-            if (dateInp) {
-                dateInp.value = dateStr;
+            const dateInput = document.getElementById('book-date');
+            if (dateInput) {
+                dateInput.value = dateStr;
                 validateBookingDate();
             }
         }
@@ -4517,6 +4542,8 @@
             saveSecuritySettings,
             addNewCustomLink,
             removeCustomLink,
+            addNewThreeDotMenuItem,
+            removeThreeDotMenuItem,
             addNewCustomPortalOption,
             removeCustomPortalOption,
             loadDocCategoryIntoAdminEditor,
