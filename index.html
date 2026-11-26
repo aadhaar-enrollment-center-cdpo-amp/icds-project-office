@@ -387,7 +387,7 @@
                             </button>
                         </div>
                     </div>
-                    <p id="booking-intro-text" class="text-xs sm:text-sm text-slate-800 font-semibold">বুকিং করার সাথে সাথেই আপনার তথ্য অটোমেটিক ক্লাউড স্টোরেজে সংরক্ষিত হবে, ১ দিন আগে রিমাইন্ডার শিডিউল হবে এবং অফিসিয়াল পিডিএফ স্লিপ জেনারেট হবে।</p>
+                    <p id="booking-intro-text" class="text-xs sm:text-sm text-slate-800 font-semibold">বুকিং করার সাথে সাথেই আপনার তথ্য অটোমেটিক ক্লাউড স্টোরেজে সংরক্ষিত হবে, ১ দিন আগে রিমাইন্ডার শিডিউল হবে এবং অফিসিয়াল পিডিএফ স্লিপ স্বয়ংক্রিয়ভাবে ডাউনলোড হবে।</p>
                     <div id="booking-extra-info-box" class="hidden bg-teal-50 border border-teal-400 rounded-2xl p-4 text-xs sm:text-sm text-slate-950 whitespace-pre-line leading-relaxed font-semibold"></div>
                 </div>
 
@@ -434,7 +434,7 @@
 
                         <div id="child-parent-aadhaar-wrap" class="hidden bg-rose-50 border border-rose-300 rounded-2xl p-4 space-y-2">
                             <label id="child-parent-aadhaar-label" for="book-child-parent-aadhaar" class="block text-xs sm:text-sm font-bold text-rose-950">
-                                শিশুর নতুন আধার কার্ড এনরোল্ড করতে বাবা বা মায়ের আধার নম্বর (১২ ডিজিট) <span class="text-rose-700 font-extrabold">*</span>
+                                শিশুর নতুন আধার কার্ড এনরোল করতে বাবা বা মায়ের আধার নম্বর (১২ ডিজিট) <span class="text-rose-700 font-extrabold">*</span>
                             </label>
                             <input type="tel" id="book-child-parent-aadhaar" inputmode="numeric" maxlength="12" minlength="12" pattern="[0-9]{12}" oninput="handleConfiguredAadhaarInput(this)" placeholder="বাবা বা মায়ের ১২ সংখ্যার আধার নম্বর লিখুন" class="w-full px-4 py-3 rounded-xl border border-rose-400 bg-white focus:ring-2 focus:ring-teal-800 outline-none text-sm font-bold tracking-wider text-slate-950">
                             <p id="child-parent-aadhaar-helper" class="text-xs text-rose-950 font-semibold">
@@ -469,7 +469,7 @@
 
                     <button type="submit" id="submit-booking-btn" class="w-full bg-teal-900 hover:bg-teal-950 text-white font-bold py-3.5 rounded-2xl shadow-sm transition text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fas fa-file-pdf"></i>
-                        <span id="submit-booking-btn-text">অ্যাপয়েন্টমেন্ট কনফার্ম ও পিডিএফ স্লিপ জেনারেট করুন</span>
+                        <span id="submit-booking-btn-text">অ্যাপয়েন্টমেন্ট কনফার্ম ও অটো PDF স্লিপ ডাউনলোড করুন</span>
                     </button>
                 </form>
             </div>
@@ -508,14 +508,14 @@
                 <div class="bg-[#fffbeb] border border-amber-400 p-4 rounded-2xl text-xs sm:text-sm text-slate-950 space-y-1 font-medium">
                     <p class="font-bold text-amber-950">জরুরি নির্দেশনা ও অটো-রিমাইন্ডার:</p>
                     <p id="slip-auto-reminder-info" class="font-bold text-teal-950">• আপনার নির্ধারিত তারিখের ঠিক ১ দিন আগে আপনার মোবাইলে অটোমেটিক রিমাইন্ডার শিডিউল করা হয়েছে।</p>
-                    <p>• স্লিপটি PDF ডাউনলোড বা প্রিন্ট করে মূল ডকুমেন্টসহ অফিসে নিয়ে আসুন। নির্দিষ্ট সময়ে উপস্থিত থাকবেন।</p>
+                    <p>• স্লিপটি অটোমেটিক PDF হিসেবে ডাউনলোড হয়ে গেছে (প্রয়োজনে নিচের বাটনে ক্লিক করে পুনরায় ডাউনলোড বা প্রিন্ট করতে পারবেন)।</p>
                     <p>• অনলাইন স্লট বুকিং সম্পূর্ণ বিনামূল্যে। শুধুমাত্র নির্ধারিত চার্জ অফিসে কাজের সময় জমা দেবেন।</p>
                     <p>• যোগাযোগ: <span id="slip-contact-phone" class="font-bold">7628852177</span> (শুধুমাত্র হোয়াটসঅ্যাপে মেসেজ করুন, কল করবেন না).</p>
                 </div>
 
                 <div id="slip-action-buttons" class="flex flex-wrap gap-3 no-print" data-html2canvas-ignore="true">
-                    <button type="button" id="download-pdf-btn" onclick="downloadBookingSlipPDF()" class="flex-1 min-w-[200px] bg-teal-900 hover:bg-teal-950 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-xs transition">
-                        <i class="fas fa-file-pdf"></i> <span>PDF ফাইল ডাউনলোড করুন</span>
+                    <button type="button" id="download-pdf-btn" onclick="downloadBookingSlipPDF(true)" class="flex-1 min-w-[200px] bg-teal-900 hover:bg-teal-950 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-xs transition">
+                        <i class="fas fa-file-pdf"></i> <span>পুনরায় PDF ডাউনলোড করুন</span>
                     </button>
                     <button type="button" onclick="downloadOneDayBeforeCalendarICS()" class="flex-1 min-w-[210px] bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-xs transition">
                         <i class="fas fa-bell"></i> <span>ফোনে ১ দিন আগের অ্যালার্ম সেভ করুন</span>
@@ -1406,7 +1406,7 @@
                 btnEditBookingInfo: "বুকিং তথ্য ও লিমিট এডিট করুন",
                 labelSelectService: "সেবার ধরন নির্বাচন করুন *",
                 labelSelectDate: "তারিখ নির্বাচন করুন (আগামী ১৬ দিন) *",
-                submitBookingBtn: "অ্যাপয়েন্টমেন্ট কনফার্ম ও পিডিএফ স্লিপ জেনারেট করুন",
+                submitBookingBtn: "অ্যাপয়েন্টমেন্ট কনফার্ম ও অটো PDF স্লিপ ডাউনলোড করুন",
                 footerWaPrefix: "হোয়াটসঅ্যাপ সাপোর্ট:",
                 footerWaSuffix: "(শুধুমাত্র মেসেজ করবেন, কল করবেন না)",
                 child05PopupBadge: "০ থেকে ৫ বছর নতুন এনরোলমেন্ট",
@@ -1456,7 +1456,7 @@
                 btnEditBookingInfo: "Edit Booking Info & Limit",
                 labelSelectService: "Select Service Type *",
                 labelSelectDate: "Select Date (Next 16 Days) *",
-                submitBookingBtn: "Confirm Appointment & Generate PDF Slip",
+                submitBookingBtn: "Confirm Appointment & Auto Download PDF Slip",
                 footerWaPrefix: "WhatsApp Support:",
                 footerWaSuffix: "(Message only, do not call)",
                 child05PopupBadge: "0 to 5 Years New Enrollment",
@@ -1506,7 +1506,7 @@
                 btnEditBookingInfo: "बुकिंग जानकारी और लिमिट एडिट करें",
                 labelSelectService: "सेवा का प्रकार चुनें *",
                 labelSelectDate: "तारीख चुनें (अगले 16 दिन) *",
-                submitBookingBtn: "अपॉइंटमेंट कन्फर्म करें और PDF स्लिप जनरेट करें",
+                submitBookingBtn: "अपॉइंटमेंट कन्फर्म करें और ऑटो PDF स्लिप डाउनलोड करें",
                 footerWaPrefix: "व्हाट्सएप सहायता:",
                 footerWaSuffix: "(केवल संदेश भेजें, कॉल न करें)",
                 child05PopupBadge: "0 से 5 वर्ष नया नामांकन",
@@ -1677,6 +1677,7 @@
         let unsubBookings = null;
         let unsubVault = null;
         let activeDocCatKey = 'name';
+        let isGeneratingPdfNow = false;
 
         function escapeHTML(str) {
             if (typeof str !== 'string') return '';
@@ -1835,7 +1836,7 @@
             dailySlotLimit: 20,
             aadhaarDigitLength: 12,
             mobileDigitLength: 10,
-            bookingIntroText: "বুকিং করার সাথে সাথেই আপনার তথ্য অটোমেটিক ক্লাউড স্টোরেজে সংরক্ষিত হবে, ১ দিন আগে রিমাইন্ডার শিডিউল হবে এবং অফিসিয়াল পিডিএফ স্লিপ জেনারেট হবে।",
+            bookingIntroText: "বুকিং করার সাথে সাথেই আপনার তথ্য অটোমেটিক ক্লাউড স্টোরেজে সংরক্ষিত হবে, ১ দিন আগে রিমাইন্ডার শিডিউল হবে এবং অফিসিয়াল পিডিএফ স্লিপ স্বয়ংক্রিয়ভাবে ডাউনলোড হবে।",
             bookingExtraInfo: "",
             bookingFooterInfo: "",
             slotRuleNote: "• সকাল ১০:৩০ থেকে বিকাল ০৪:৩০-এর মধ্যে স্লট সংখ্যা অনুযায়ী স্বয়ংক্রিয়ভাবে সময় তৈরি হয় এবং একই আধার নম্বর দিয়ে একদিনে ২টির বেশি বুকিং করা যাবে না।",
@@ -3117,7 +3118,7 @@
             if (toastTimer) clearTimeout(toastTimer);
             box.textContent = msg;
             box.classList.remove('hidden');
-            toastTimer = setTimeout(() => box.classList.add('hidden'), 3800);
+            toastTimer = setTimeout(() => box.classList.add('hidden'), 4200);
         }
 
         function renderNoticeSlide() {
@@ -3790,7 +3791,11 @@
             }
 
             if (submitBtn) submitBtn.disabled = false;
-            showToast(`✅ বুকিং সফল! টোকেন #${token} ও ১ দিন আগের (${reminderDate}) অটো-রিমাইন্ডার সেট হয়েছে।`);
+            showToast(`✅ বুকিং সফল! টোকেন #${token} এর PDF স্লিপ অটোমেটিক ডাউনলোড হচ্ছে...`);
+
+            // বুকিং কনফার্ম হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে PDF স্লিপ ডাউনলোড শুরু হবে
+            await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 250)));
+            await downloadBookingSlipPDF(false);
         }
 
         function renderSlipQRCode(bookingObj) {
@@ -3837,22 +3842,24 @@
             });
         }
 
-        async function downloadBookingSlipPDF() {
+        async function downloadBookingSlipPDF(isManualClick = true) {
+            if (isGeneratingPdfNow) return;
             const slipCard = document.getElementById('booking-slip-card');
             const btn = document.getElementById('download-pdf-btn');
             if (!slipCard || slipCard.classList.contains('hidden')) {
-                showToast("আগে একটি বুকিং স্লিপ তৈরি করুন।");
+                if (isManualClick) showToast("আগে একটি বুকিং স্লিপ তৈরি করুন।");
                 return;
             }
             if (typeof html2canvas === 'undefined' || !window.jspdf || !window.jspdf.jsPDF) {
-                window.print();
+                if (isManualClick) window.print();
                 return;
             }
 
+            isGeneratingPdfNow = true;
             const originalBtnHtml = btn ? btn.innerHTML : "";
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>PDF তৈরি হচ্ছে...</span>`;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>PDF ডাউনলোড হচ্ছে...</span>`;
             }
 
             slipCard.classList.add('pdf-capture-safe');
@@ -3899,7 +3906,7 @@
                 }
 
                 pdf.save(`Appointment_Slip_${lastGeneratedToken}.pdf`);
-                showToast(`✅ টোকেন #${lastGeneratedToken} এর PDF স্লিপ ডাউনলোড হয়েছে!`);
+                showToast(`✅ টোকেন #${lastGeneratedToken} এর PDF স্লিপ ডাউনলোড সম্পন্ন হয়েছে!`);
             } catch (err) {
                 console.error("PDF generation fallback:", err);
                 try {
@@ -3916,12 +3923,13 @@
                         y += wrapped.length * 7;
                     });
                     pdf.save(`Appointment_Slip_${lastGeneratedToken}.pdf`);
-                    showToast(`✅ টোকেন #${lastGeneratedToken} এর PDF ডাউনলোড হয়েছে!`);
+                    showToast(`✅ টোকেন #${lastGeneratedToken} এর PDF ডাউনলোড সম্পন্ন হয়েছে!`);
                 } catch (e2) {
-                    window.print();
+                    if (isManualClick) window.print();
                 }
             } finally {
                 slipCard.classList.remove('pdf-capture-safe');
+                isGeneratingPdfNow = false;
                 if (btn) {
                     btn.disabled = false;
                     btn.innerHTML = originalBtnHtml;
